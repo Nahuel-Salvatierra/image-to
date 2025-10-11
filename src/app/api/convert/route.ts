@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("image") as File;
-    const format = formData.get("format") as "webp" | "png" | "jpg";
+    const format = formData.get("format") as string;
 
     if (!file) {
       return NextResponse.json(
@@ -14,32 +14,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!format || !["webp", "png", "jpg"].includes(format)) {
+    const validFormats = ["webp", "png", "jpg", "jpeg", "gif", "tiff"];
+    if (!format || !validFormats.includes(format.toLowerCase())) {
       return NextResponse.json({ error: "Formato no válido" }, { status: 400 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const normalizedFormat = format.toLowerCase();
 
     let convertedBuffer: Buffer;
 
-    if (format === "webp") {
+    if (normalizedFormat === "webp") {
       convertedBuffer = await sharp(buffer).webp({ quality: 90 }).toBuffer();
-    } else if (format === "png") {
+    } else if (normalizedFormat === "png") {
       convertedBuffer = await sharp(buffer).png({ quality: 90 }).toBuffer();
-    } else {
+    } else if (normalizedFormat === "jpg" || normalizedFormat === "jpeg") {
       convertedBuffer = await sharp(buffer).jpeg({ quality: 90 }).toBuffer();
+    } else if (normalizedFormat === "gif") {
+      convertedBuffer = await sharp(buffer).gif().toBuffer();
+    } else if (normalizedFormat === "tiff") {
+      convertedBuffer = await sharp(buffer).tiff({ quality: 90 }).toBuffer();
+    } else {
+      convertedBuffer = await sharp(buffer).png({ quality: 90 }).toBuffer();
     }
 
-    const mimeTypes = {
+    const mimeTypes: Record<string, string> = {
       webp: "image/webp",
       png: "image/png",
       jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      gif: "image/gif",
+      tiff: "image/tiff",
     };
+
+    const outputFormat = normalizedFormat === "jpeg" ? "jpg" : normalizedFormat;
 
     return new NextResponse(new Uint8Array(convertedBuffer), {
       headers: {
-        "Content-Type": mimeTypes[format],
-        "Content-Disposition": `attachment; filename="converted.${format}"`,
+        "Content-Type": mimeTypes[normalizedFormat] || "image/png",
+        "Content-Disposition": `attachment; filename="converted.${outputFormat}"`,
       },
     });
   } catch (error) {
