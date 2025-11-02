@@ -2,6 +2,7 @@
 
 import { useState, useRef, DragEvent, ClipboardEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 type ImageFormat = "webp" | "png" | "jpg" | "jpeg" | "gif" | "tiff";
 
@@ -200,9 +201,32 @@ export default function Home() {
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-1">
           Convertidor de Imágenes
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+        <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-2">
           Convierte múltiples imágenes entre formatos
         </p>
+        <div className="flex gap-2 justify-center">
+          <span className="px-3 py-1 text-xs bg-purple-200 dark:bg-purple-800 rounded">
+            Convertir
+          </span>
+          <Link
+            href="/resize"
+            className="px-3 py-1 text-xs bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded transition-colors"
+          >
+            Redimensionar
+          </Link>
+          <Link
+            href="/collage"
+            className="px-3 py-1 text-xs bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded transition-colors"
+          >
+            Collage
+          </Link>
+          <Link
+            href="/compress"
+            className="px-3 py-1 text-xs bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded transition-colors"
+          >
+            Comprimir
+          </Link>
+        </div>
       </motion.div>
 
       <motion.div
