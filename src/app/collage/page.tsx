@@ -15,7 +15,9 @@ export default function CollagePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [columns, setColumns] = useState(3);
   const [rows, setRows] = useState(3);
-  const [aspectRatio, setAspectRatio] = useState<"9:16" | "custom">("9:16");
+  const [aspectRatio, setAspectRatio] = useState<"9:16" | "1:1" | "custom">(
+    "9:16"
+  );
   const [collages, setCollages] = useState<
     Array<{ url: string; index: number }>
   >([]);
@@ -165,7 +167,8 @@ export default function CollagePage() {
     });
     setCollages([]);
 
-    const cellAspectRatio = aspectRatio === "9:16" ? 9 / 16 : 9 / 16;
+    const cellAspectRatio =
+      aspectRatio === "9:16" ? 9 / 16 : aspectRatio === "1:1" ? 1 : 9 / 16;
     const maxCellWidth = 800;
     const cellWidth = maxCellWidth;
     const cellHeight = cellWidth / cellAspectRatio;
@@ -359,11 +362,12 @@ export default function CollagePage() {
             <select
               value={aspectRatio}
               onChange={(e) =>
-                setAspectRatio(e.target.value as "9:16" | "custom")
+                setAspectRatio(e.target.value as "9:16" | "1:1" | "custom")
               }
               className="w-full px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             >
               <option value="9:16">9:16 (Vertical)</option>
+              <option value="1:1">1:1 (Cuadrado)</option>
               <option value="custom" disabled>
                 Personalizado (próximamente)
               </option>
