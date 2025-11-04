@@ -198,9 +198,16 @@ export default function Home() {
         transition={{ duration: 0.5 }}
         className="text-center mb-2 sm:mb-3"
       >
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-1">
-          Convertidor de Imágenes
-        </h1>
+        <div className="flex items-center justify-center gap-2 mb-1">
+          <img
+            src="/icono.png"
+            alt="Icono"
+            className="w-8 h-8 sm:w-10 sm:h-10"
+          />
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
+            Convertidor de Imágenes
+          </h1>
+        </div>
         <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-2">
           Convierte múltiples imágenes entre formatos
         </p>
